@@ -66,4 +66,12 @@ class GoogleSheetsApi {
     currentNotes.add(note);
     await _worksheet!.values.appendRow([note]);
   }
+
+  //delete a node
+  static Future delete() async {
+    if (_worksheet == null) return false;
+    numberOfNotes--;
+    currentNotes.removeAt(numberOfNotes);
+    await _worksheet?.clearRow(GoogleSheetsApi.numberOfNotes + 1);
+  }
 }

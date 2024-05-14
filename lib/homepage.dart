@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:sticky_notes/google_sheets_api.dart';
 import 'package:sticky_notes/loading_circle.dart';
 import 'package:sticky_notes/my_button.dart';
@@ -19,6 +20,12 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   final TextEditingController _controller = TextEditingController();
+
+  Future<void> _refresh() async {
+    startLoading();
+    setState(() {});
+    return await Future.delayed(const Duration(seconds: 1));
+  }
 
   @override
   void initState() {
@@ -54,34 +61,47 @@ class _HomepageState extends State<Homepage> {
         centerTitle: true,
         backgroundColor: Colors.grey[300],
         title: Text('S T I C K Y  N O T E S'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                GoogleSheetsApi.delete();
+                setState(() {});
+              },
+              icon: Icon(Icons.delete))
+        ],
       ),
       backgroundColor: Colors.grey[300],
-      body: Column(
-        children: [
-          Expanded(
-            child: Container(
-                child: GoogleSheetsApi.loading == true
-                    ? LoadingCircle()
-                    : NotesGrid()),
-          ),
-          Container(
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: TextField(
-                controller: _controller,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    fillColor: Colors.white,
-                    hintText: 'Write a New Note',
-                    suffixIcon: MyButton(
-                      function: _post,
-                    ),
-                    labelText: 'New Note'),
-              ),
+      body: LiquidPullToRefresh(
+        onRefresh: _refresh,
+        showChildOpacityTransition: false,
+        animSpeedFactor: 5,
+        child: Column(
+          children: [
+            Expanded(
+              child: Container(
+                  child: GoogleSheetsApi.loading == true
+                      ? LoadingCircle()
+                      : NotesGrid()),
             ),
-          )
-        ],
+            Container(
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: TextField(
+                  controller: _controller,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Colors.white,
+                      hintText: 'Write a New Note',
+                      suffixIcon: MyButton(
+                        function: _post,
+                      ),
+                      labelText: 'New Note'),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

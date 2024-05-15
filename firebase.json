@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "stickynotes-19",
+    "site": "sticky-notes-19",
     "public": "build/web",
     "ignore": [
       "firebase.json",

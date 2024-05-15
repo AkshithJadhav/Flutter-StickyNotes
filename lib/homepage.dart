@@ -71,37 +71,32 @@ class _HomepageState extends State<Homepage> {
         ],
       ),
       backgroundColor: Colors.grey[300],
-      body: LiquidPullToRefresh(
-        onRefresh: _refresh,
-        showChildOpacityTransition: false,
-        animSpeedFactor: 5,
-        child: Column(
-          children: [
-            Expanded(
-              child: Container(
-                  child: GoogleSheetsApi.loading == true
-                      ? LoadingCircle()
-                      : NotesGrid()),
-            ),
-            Container(
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: TextField(
-                  controller: _controller,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      filled: true,
-                      fillColor: Colors.white,
-                      hintText: 'Write a New Note',
-                      suffixIcon: MyButton(
-                        function: _post,
-                      ),
-                      labelText: 'New Note'),
-                ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Container(
+                child: GoogleSheetsApi.loading == true
+                    ? LoadingCircle()
+                    : NotesGrid()),
+          ),
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: TextField(
+                controller: _controller,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.white,
+                    hintText: 'Write a New Note',
+                    suffixIcon: MyButton(
+                      function: _post,
+                    ),
+                    labelText: 'New Note'),
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }

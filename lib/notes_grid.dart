@@ -11,7 +11,7 @@ class NotesGrid extends StatelessWidget {
     return GridView.builder(
       itemCount: GoogleSheetsApi.currentNotes.length,
       gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       itemBuilder: (context, index) {
         return MyTextBox(text: GoogleSheetsApi.currentNotes[index]);
       },
